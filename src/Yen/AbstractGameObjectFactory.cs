@@ -8,24 +8,40 @@ namespace Yen
 {
     public abstract class AbstractGameObjectFactory : IGameObjectFactory
     {
-        private Dictionary<Type, IComponent> _compontents = new Dictionary<Type, IComponent>();
+        private Dictionary<Type, ILogicComponent> _logicCompontents = new Dictionary<Type, ILogicComponent>();
+        private Dictionary<Type, IGraphicsComponent> _graphicsComponents = new Dictionary<Type, IGraphicsComponent>();
         private Vector2 _initialPosition = Vector2.Zero;
 
         public IGameObject Create()
         {
-            return new GameObject(_initialPosition, _compontents.Values.ToList());
+            return new GameObject(
+                _initialPosition,
+                _logicCompontents.Values.ToList(),
+                _graphicsComponents.Values.ToList());
         }
 
-        protected void AddComponent(IComponent component)
+        protected void AddComponent(ILogicComponent component)
         {
             if (component is null) throw new ArgumentNullException(nameof(component));
 
             var componentType = component.GetType();
 
-            if(_compontents.ContainsKey(componentType))
+            if(_logicCompontents.ContainsKey(componentType))
                 throw new ComponentDeclaredException(componentType.Name);
 
-            _compontents.Add(componentType, component);
+            _logicCompontents.Add(componentType, component);
+        }
+
+        protected void AddComponent(IGraphicsComponent component)
+        {
+            if (component is null) throw new ArgumentNullException(nameof(component));
+
+            var componentType = component.GetType();
+
+            if (_graphicsComponents.ContainsKey(componentType))
+                throw new ComponentDeclaredException(componentType.Name);
+
+            _graphicsComponents.Add(componentType, component);
         }
 
         protected void SetInitialPosition(Vector2 initialPosition)

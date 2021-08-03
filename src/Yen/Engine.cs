@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Yen
 {
@@ -33,22 +30,19 @@ namespace Yen
 
         protected override void LoadContent()
         {
-            var loadingTask = _scene.Load(new LoadContext(Content, GraphicsDevice));
-            loadingTask.Wait();
+            _scene.Load(new LoadContext(Content, GraphicsDevice));
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            //_scene.Update(new UpdateContext(gameTime, GraphicsDevice, Content));
+            _scene.Update(new UpdateContext(gameTime, Content));
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            _scene.Update(new UpdateContext(gameTime, GraphicsDevice, Content));
 
             base.Draw(gameTime);
         }

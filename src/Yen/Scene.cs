@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Yen
 {
@@ -22,10 +19,20 @@ namespace Yen
             }
         }
 
-        public async Task Load(LoadContext context)
+        public void Draw(DrawContext context)
         {
-            var tasks = GameObjects.Select(x => x.Load(context));
-            await Task.WhenAll(tasks);
+            foreach (var obj in GameObjects)
+            {
+                obj.Draw(context);
+            }
+        }
+
+        public void Load(LoadContext context)
+        {
+            foreach(var obj in GameObjects)
+            {
+                obj.Load(context);
+            }
         }
     }
 }

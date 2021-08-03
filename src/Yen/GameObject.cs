@@ -1,35 +1,49 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Yen
 {
     public sealed class GameObject : IGameObject
     {
-        public GameObject(Vector2 position, IList<IComponent> compontents)
+        public GameObject(Vector2 position, IList<ILogicComponent> logicCompontents, IList<IGraphicsComponent> graphicsComponents)
         {
             Position = position;
-            Components = compontents;
+            LogicComponents = logicCompontents;
+            GraphicsComponents = graphicsComponents;
         }
 
         public Vector2 Position { get; private set; }
 
-        public IList<IComponent> Components { get; private set; }
+        public IList<ILogicComponent> LogicComponents { get; private set; }
+        public IList<IGraphicsComponent> GraphicsComponents { get; private set; }
 
         public void Update(UpdateContext context)
         {
-            foreach (var component in Components)
+            foreach (var component in LogicComponents)
             {
                 component.Update(context, this);
             }
         }
 
-        public async Task Load(LoadContext context)
+        public void Draw(DrawContext context)
         {
-            var tasks = Components.Select(x => x.OnLoad(context, this));
-            await Task.WhenAll(tasks);
+            foreach(var component in GraphicsComponents)
+            {
+                component.Draw(context, this);
+            }
+        }
+
+        public void Load(LoadContext context)
+        {
+            foreach(var component in LogicComponents)
+            {
+                component.OnLoad(context, this);
+            }
+
+            foreach(var component in GraphicsComponents)
+            {
+                component.OnLoad(context, this);
+            }
         }
     }
 }

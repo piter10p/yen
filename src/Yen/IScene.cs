@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Yen
 {
@@ -7,6 +6,7 @@ namespace Yen
     {
         IList<IGameObject> GameObjects { get; }
         void Update(UpdateContext context);
-        Task Load(LoadContext context);
+        void Draw(DrawContext context);
+        void Load(LoadContext context);
     }
 }
