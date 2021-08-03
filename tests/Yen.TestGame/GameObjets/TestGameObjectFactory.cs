@@ -13,10 +13,10 @@ namespace Yen.TestGame.GameObjets
             var animation = new Animation(
                 "SMILE",
                 "Smile",
-                2,
+                3,
                 TimeSpan.FromSeconds(1));
 
-            AddComponent(new AnimatedGraphicsComponent(new[] { animation }, Color.White));
+            AddComponent(new AnimatedGraphicsComponent(new[] { animation }, Color.White, AnimationPlayMode.PingPong));
         }
     }
 }
