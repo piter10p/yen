@@ -1,4 +1,5 @@
 ﻿using System;
+using Yen.TestGame.Scenes;
 
 namespace Yen.TestGame
 {
@@ -7,8 +8,8 @@ namespace Yen.TestGame
         [STAThread]
         static void Main()
         {
-            using (var game = new Engine())
-                game.Run();
+            using var game = new Engine(new TestSceneFactory());
+            game.Run();
         }
     }
 }
