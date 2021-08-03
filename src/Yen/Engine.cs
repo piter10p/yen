@@ -43,7 +43,7 @@ namespace Yen
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            _scene.Draw(new DrawContext(gameTime, GraphicsDevice));
             base.Draw(gameTime);
         }
     }
