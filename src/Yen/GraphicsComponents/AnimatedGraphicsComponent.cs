@@ -75,6 +75,8 @@ namespace Yen.GraphicsComponents
                     _frameIndex = 0;
                 else
                     _frameIndex++;
+
+                _lastFrameChangeTimeSpan = TimeSpan.Zero;
             }
         }
 
