@@ -2,9 +2,9 @@
 
 namespace Yen
 {
-    public class RegisterContext
+    public class RegistrationContext
     {
-        public RegisterContext(IContentRepository contentRepository)
+        public RegistrationContext(IContentRepository contentRepository)
         {
             ContentRepository = contentRepository;
         }

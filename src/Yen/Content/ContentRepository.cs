@@ -10,9 +10,9 @@ namespace Yen.Content
     {
         private readonly Dictionary<Guid, ContentEntry> _contnets;
 
-        public ContentRepository(IContentCollection contentCollection)
+        public ContentRepository(IContentSource contentSource)
         {
-            _contnets = contentCollection.Contents.ToDictionary(k => k.Id, v => new ContentEntry(v));
+            _contnets = contentSource.Contents.ToDictionary(k => k.Id, v => new ContentEntry(v));
         }
 
         public IContent GetContent(Guid id)

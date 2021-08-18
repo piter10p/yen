@@ -13,7 +13,7 @@ namespace Yen.TestGame.GameObjets
 
             var animations = new HashSet<Guid>()
             {
-                ContentIdProvider.Animations.Smile
+                IdsProvider.Contents.Animations.Smile
             };
 
             AddComponent(new AnimatedGraphicsComponent(animations, Color.White, AnimationPlayMode.PingPong));

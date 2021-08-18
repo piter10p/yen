@@ -1,12 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Yen
+namespace Yen.Scenes
 {
-    public interface IGameObject
+    public interface IScene
     {
-        Vector2 Position { get; }
-        IEnumerable<IComponent> Components { get; }
+        Guid Id { get; }
+        int Layer { get; }
+        IList<IGameObject> GameObjects { get; }
         void Update(UpdateContext context);
         void Draw(DrawContext context);
         void Register(RegistrationContext context);

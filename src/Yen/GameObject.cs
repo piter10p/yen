@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using Yen.Extensions;
 
 namespace Yen
 {
@@ -43,11 +42,19 @@ namespace Yen
             }
         }
 
-        public void Register(RegisterContext context)
+        public void Register(RegistrationContext context)
         {
             foreach (var component in _loadableComponents)
             {
                 context.ContentRepository.AddUsages(component.RequiredContentsIds);
+            }
+        }
+
+        public void Deregister(RegistrationContext context)
+        {
+            foreach (var component in _loadableComponents)
+            {
+                context.ContentRepository.RemoveUsages(component.RequiredContentsIds);
             }
         }
 

@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Yen
+namespace Yen.Scenes
 {
     public sealed class Scene : IScene
     {
-        public Scene(IList<IGameObject> gameObjects)
+        public Scene(
+            Guid id,
+            IList<IGameObject> gameObjects)
         {
+            Id = id;
             GameObjects = gameObjects;
         }
+
+        public Guid Id { get; }
+        public int Layer { get; }
 
         public IList<IGameObject> GameObjects { get; }
 
         public void Update(UpdateContext context)
         {
-            foreach(var obj in GameObjects)
+            foreach (var obj in GameObjects)
             {
                 obj.Update(context);
             }
@@ -27,11 +34,19 @@ namespace Yen
             }
         }
 
-        public void Register(RegisterContext context)
+        public void Register(RegistrationContext context)
         {
             foreach (var obj in GameObjects)
             {
                 obj.Register(context);
+            }
+        }
+
+        public void Deregister(RegistrationContext context)
+        {
+            foreach (var obj in GameObjects)
+            {
+                obj.Deregister(context);
             }
         }
 

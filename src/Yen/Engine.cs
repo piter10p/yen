@@ -1,54 +1,76 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 using Yen.Content;
+using Yen.Scenes;
 
 namespace Yen
 {
     public sealed class Engine : Game
     {
         private readonly GraphicsDeviceManager _graphics;
-        private readonly IContentRepository _contentRepository;
-        private readonly ISceneFactory _sceneFactory;
-        private IScene _scene;
+        private readonly Action<IServiceCollection> _servicesFactory;
+        private IServiceProvider _serviceProvider;
 
-        public Engine(IContentCollection contentCollection, ISceneFactory initialScene)
+        public Engine(Action<IServiceCollection> servicesFactory)
         {
-            if (contentCollection is null) throw new ArgumentNullException(nameof(contentCollection));
-            if (initialScene is null) throw new ArgumentNullException(nameof(initialScene));
+            if (servicesFactory is null) throw new ArgumentNullException(nameof(servicesFactory));
 
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _contentRepository = new ContentRepository(contentCollection);
-            _sceneFactory = initialScene;
+            _servicesFactory = servicesFactory;
         }
 
         protected override void Initialize()
         {
-            _scene = _sceneFactory.Create();
+            _serviceProvider = CreateServiceProvider(_servicesFactory);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _scene.Register(new RegisterContext(_contentRepository));
-            _contentRepository.Load(new LoadContext(Content));
-            _scene.OnLoad(new OnLoadContext(GraphicsDevice, _contentRepository));
+            var factory = _serviceProvider.GetRequiredService<IScenesFactoriesSource>().Factories.FirstOrDefault();
+
+            if (!(factory is null))
+            {
+                _serviceProvider.GetRequiredService<IScenesLoader>().LoadScene(factory.Id, 0);
+            }
+
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _scene.Update(new UpdateContext(gameTime));
+            _serviceProvider.GetRequiredService<IScenesUpdater>().Update(new UpdateContext(gameTime));
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _scene.Draw(new DrawContext(gameTime, GraphicsDevice));
+            _serviceProvider.GetRequiredService<IScenesUpdater>().Draw(new DrawContext(
+                gameTime,
+                GraphicsDevice));
             base.Draw(gameTime);
+        }
+
+        private IServiceProvider CreateServiceProvider(Action<IServiceCollection> servicesFactory)
+        {
+            var services = new ServiceCollection();
+            servicesFactory(services);
+
+            services
+               .AddSingleton(GraphicsDevice)
+               .AddSingleton(Content)
+               .AddSingleton<IContentRepository, ContentRepository>()
+               .AddSingleton<ScenesManager>()
+               .AddSingleton<IScenesLoader>(x => x.GetRequiredService<ScenesManager>())
+               .AddSingleton<IScenesUpdater>(x => x.GetRequiredService<ScenesManager>());
+
+            return services.BuildServiceProvider();
         }
     }
 }

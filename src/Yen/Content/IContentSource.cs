@@ -2,9 +2,8 @@
 
 namespace Yen.Content
 {
-    public interface IContentCollection
+    public interface IContentSource
     {
         IEnumerable<IContent> Contents { get; }
-        IContentCollection AddContent(IContent content);
     }
 }

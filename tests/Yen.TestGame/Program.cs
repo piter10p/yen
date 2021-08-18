@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using Yen.Content;
+using Yen.Scenes;
 using Yen.TestGame.Scenes;
 
 namespace Yen.TestGame
@@ -8,7 +11,12 @@ namespace Yen.TestGame
         [STAThread]
         static void Main()
         {
-            using var game = new Engine(ContentCollectionFabric.Create(), new TestSceneFactory());
+            using var game = new Engine(services =>
+            {
+                services
+                    .AddSingleton<IContentSource, ContentSource>()
+                    .AddSingleton<IScenesFactoriesSource, ScenesFactoriesSource>();
+            });
             game.Run();
         }
     }
