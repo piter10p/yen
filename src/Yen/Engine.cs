@@ -1,24 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Yen.Content;
 
 namespace Yen
 {
     public sealed class Engine : Game
     {
-        private GraphicsDeviceManager _graphics;
-
-        private ISceneFactory _sceneFactory;
+        private readonly GraphicsDeviceManager _graphics;
+        private readonly IContentRepository _contentRepository;
+        private readonly ISceneFactory _sceneFactory;
         private IScene _scene;
 
-        public Engine(ISceneFactory initialScene)
+        public Engine(IContentCollection contentCollection, ISceneFactory initialScene)
         {
+            if (contentCollection is null) throw new ArgumentNullException(nameof(contentCollection));
             if (initialScene is null) throw new ArgumentNullException(nameof(initialScene));
 
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+            _contentRepository = new ContentRepository(contentCollection);
             _sceneFactory = initialScene;
         }
 
@@ -30,13 +32,15 @@ namespace Yen
 
         protected override void LoadContent()
         {
-            _scene.Load(new LoadContext(Content, GraphicsDevice));
+            _scene.Register(new RegisterContext(_contentRepository));
+            _contentRepository.Load(new LoadContext(Content));
+            _scene.OnLoad(new OnLoadContext(GraphicsDevice, _contentRepository));
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _scene.Update(new UpdateContext(gameTime, Content));
+            _scene.Update(new UpdateContext(gameTime));
             base.Update(gameTime);
         }
 

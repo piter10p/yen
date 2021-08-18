@@ -27,11 +27,19 @@ namespace Yen
             }
         }
 
-        public void Load(LoadContext context)
+        public void Register(RegisterContext context)
         {
-            foreach(var obj in GameObjects)
+            foreach (var obj in GameObjects)
             {
-                obj.Load(context);
+                obj.Register(context);
+            }
+        }
+
+        public void OnLoad(OnLoadContext context)
+        {
+            foreach (var obj in GameObjects)
+            {
+                obj.OnLoad(context);
             }
         }
     }

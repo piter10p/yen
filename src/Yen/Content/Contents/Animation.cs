@@ -1,42 +1,43 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using Yen.Exceptions.GraphicsComponents;
+using Yen.Exceptions.Content.Contents;
 
-namespace Yen.GraphicsComponents
+namespace Yen.Content.Contents
 {
     public class Animation : IAnimation
     {
         private Texture2D[] _frames = null;
 
         public Animation(
-            string name,
+            string id,
             string framesPath,
             int framesCount,
             TimeSpan framesDisplayDelay)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
             if (string.IsNullOrWhiteSpace(framesPath)) throw new ArgumentException($"'{nameof(framesPath)}' cannot be null or whitespace.", nameof(framesPath));
             if (framesCount <= 0) throw new ArgumentException($"'{nameof(framesPath)}' must be positive number.", nameof(framesCount));
 
-            Name = name;
+            Id = id;
             FramesPath = framesPath;
             FramesCount = framesCount;
             FrameDisplayDelay = framesDisplayDelay;
         }
 
-        public string Name { get; }
+        public string Id { get; }
         public string FramesPath { get; }
         public int FramesCount { get; }
         public TimeSpan FrameDisplayDelay { get; }
-        public bool Loaded { get; private set; } = false;
+        public bool Loaded => !(_frames is null);
         public Texture2D[] Frames
-            => Loaded ? _frames : throw new AnimationNotLoadedException(Name);
+            => Loaded ? _frames : throw new ContentNotLoadedException(Id);
 
         public void Load(LoadContext context)
         {
             if (Loaded)
-                throw new AnimationLoadedAlreadyException(Name);
+                throw new ContentLoadedAlreadyException(Id);
 
             var frames = new List<Texture2D>();
 
@@ -49,13 +50,26 @@ namespace Yen.GraphicsComponents
                     frames.Add(frame);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new AnimationLoadingException(Name, e);
+                throw new ContentLoadingException(Id, e);
             }
 
             _frames = frames.ToArray();
-            Loaded = true;
+        }
+
+        public void Unload()
+        {
+            if (!Loaded)
+                throw new ContentNotLoadedException(Id);
+
+            foreach (var f in _frames)
+            {
+                if (!f.IsDisposed)
+                    f.Dispose();
+            }
+
+            _frames = null;
         }
     }
 }

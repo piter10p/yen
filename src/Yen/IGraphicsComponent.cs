@@ -1,8 +1,7 @@
 ﻿namespace Yen
 {
-    public interface IGraphicsComponent
+    public interface IGraphicsComponent : IComponent
     {
-        void OnLoad(LoadContext loadContext, IGameObject obj);
         void Draw(DrawContext context, IGameObject obj);
     }
 }

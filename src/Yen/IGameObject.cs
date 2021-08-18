@@ -6,10 +6,10 @@ namespace Yen
     public interface IGameObject
     {
         Vector2 Position { get; }
-        IList<ILogicComponent> LogicComponents { get; }
-        IList<IGraphicsComponent> GraphicsComponents { get; }
+        IEnumerable<IComponent> Components { get; }
         void Update(UpdateContext context);
         void Draw(DrawContext context);
-        void Load(LoadContext context);
+        void Register(RegisterContext context);
+        void OnLoad(OnLoadContext context);
     }
 }

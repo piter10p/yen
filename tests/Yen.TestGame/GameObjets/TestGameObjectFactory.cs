@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Yen.GraphicsComponents;
 
 namespace Yen.TestGame.GameObjets
@@ -10,13 +11,12 @@ namespace Yen.TestGame.GameObjets
         {
             SetInitialPosition(new Vector2(100, 100));
 
-            var animation = new Animation(
-                "SMILE",
-                "Smile",
-                3,
-                TimeSpan.FromSeconds(1));
+            var animations = new HashSet<string>()
+            {
+                ContentIdProvider.Animations.Smile
+            };
 
-            AddComponent(new AnimatedGraphicsComponent(new[] { animation }, Color.White, AnimationPlayMode.PingPong));
+            AddComponent(new AnimatedGraphicsComponent(animations, Color.White, AnimationPlayMode.PingPong));
         }
     }
 }

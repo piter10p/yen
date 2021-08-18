@@ -3,13 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yen.Content.Contents;
 using Yen.Exceptions.GraphicsComponents;
+using Yen.Extensions;
 
 namespace Yen.GraphicsComponents
 {
-    public class AnimatedGraphicsComponent : IGraphicsComponent
+    public class AnimatedGraphicsComponent : IGraphicsComponent, ILoadableComponent
     {
-        private IList<IAnimation> _animations;
+        private readonly ISet<string> _animationIds;
+        private List<IAnimation> _animations;
         private IAnimation _activeAnimation;
         private Color _color;
 
@@ -22,13 +25,16 @@ namespace Yen.GraphicsComponents
 
         private SpriteBatch _spriteBatch;
 
+        public ISet<string> RequiredContentsIds => _animationIds;
+
         public AnimatedGraphicsComponent(
-            IList<IAnimation> animations,
+            ISet<string> animationIds,
             Color color,
             AnimationPlayMode animationPlayMode)
         {
-            _animations = animations ?? throw new ArgumentNullException(nameof(animations));
-            _activeAnimation = _animations.FirstOrDefault();
+            if (!animationIds.Any()) throw new NoAnimationsSpecifiedException();
+
+            _animationIds = animationIds;
             _color = color;
             _animationPlayMode = animationPlayMode;
         }
@@ -38,35 +44,23 @@ namespace Yen.GraphicsComponents
             if (_activeAnimation is null)
                 throw new NoActiveAnimationException();
 
-            if (!_activeAnimation.Loaded)
-                throw new AnimationNotLoadedException(_activeAnimation.Name);
-
             _lastFrameChangeTimeSpan += context.GameTime.ElapsedGameTime;
 
             UpdateFrameIndex();
             UpdateFrame(obj);
         }
 
-        public void OnLoad(LoadContext loadContext, IGameObject obj)
+        public void PlayAnimation(string animationId, AnimationPlayMode animationPlayMode, int startFrame = 0)
         {
-            _spriteBatch = new SpriteBatch(loadContext.GraphicsDevice);
+            if (string.IsNullOrWhiteSpace(animationId)) throw new ArgumentException($"'{nameof(animationId)}' cannot be null or whitespace.", nameof(animationId));
 
-            foreach (var animation in _animations)
-            {
-                if (!animation.Loaded)
-                    animation.Load(loadContext);
-            }
-        }
+            if (!_animationIds.Contains(animationId))
+                throw new AnimationNotKnownException(animationId);
 
-        public void PlayAnimation(string animationName, AnimationPlayMode animationPlayMode, int startFrame = 0)
-        {
-            if (string.IsNullOrWhiteSpace(animationName)) throw new ArgumentException($"'{nameof(animationName)}' cannot be null or whitespace.", nameof(animationName));
-
-            var animation = _animations.FirstOrDefault(x => x.Name == animationName)
-                ?? throw new AnimationNotKnownException(animationName);
+            var animation = _animations.First(x => x.Id == animationId);
 
             if (startFrame >= animation.FramesCount)
-                throw new FrameIndexOutOfRangeException(animationName, startFrame, animation.FramesCount);
+                throw new FrameIndexOutOfRangeException(animationId, startFrame, animation.FramesCount);
 
             _activeAnimation = animation;
             _frameIndex = startFrame;
@@ -138,6 +132,22 @@ namespace Yen.GraphicsComponents
             _spriteBatch.Begin();
             _spriteBatch.Draw(frame, gameObject.Position, _color);
             _spriteBatch.End();
+        }
+
+        public void OnLoad(OnLoadContext context, IGameObject obj)
+        {
+            _spriteBatch = new SpriteBatch(context.GraphicsDevice);
+
+            var animations = new List<IAnimation>();
+
+            foreach (var id in _animationIds)
+            {
+                var animation = context.ContentRepository.GetContent(id).As<IAnimation>();
+                animations.Add(animation);
+            }
+
+            _animations = animations;
+            _activeAnimation = animations.First();
         }
     }
 }

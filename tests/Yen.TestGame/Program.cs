@@ -8,7 +8,7 @@ namespace Yen.TestGame
         [STAThread]
         static void Main()
         {
-            using var game = new Engine(new TestSceneFactory());
+            using var game = new Engine(ContentCollectionFabric.Create(), new TestSceneFactory());
             game.Run();
         }
     }

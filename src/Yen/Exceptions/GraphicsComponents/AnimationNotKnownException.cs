@@ -2,7 +2,7 @@
 {
     public sealed class AnimationNotKnownException : YenException
     {
-        public AnimationNotKnownException(string animationName) : base($"Animation name not known for component: '{animationName}'.")
+        public AnimationNotKnownException(string animationId) : base($"Animation id not known for component: '{animationId}'.")
         {
         }
     }
