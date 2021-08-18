@@ -11,12 +11,11 @@ namespace Yen.Content.Contents
         private Texture2D[] _frames = null;
 
         public Animation(
-            string id,
+            Guid id,
             string framesPath,
             int framesCount,
             TimeSpan framesDisplayDelay)
         {
-            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
             if (string.IsNullOrWhiteSpace(framesPath)) throw new ArgumentException($"'{nameof(framesPath)}' cannot be null or whitespace.", nameof(framesPath));
             if (framesCount <= 0) throw new ArgumentException($"'{nameof(framesPath)}' must be positive number.", nameof(framesCount));
 
@@ -26,7 +25,7 @@ namespace Yen.Content.Contents
             FrameDisplayDelay = framesDisplayDelay;
         }
 
-        public string Id { get; }
+        public Guid Id { get; }
         public string FramesPath { get; }
         public int FramesCount { get; }
         public TimeSpan FrameDisplayDelay { get; }

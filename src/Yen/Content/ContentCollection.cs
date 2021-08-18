@@ -6,7 +6,7 @@ namespace Yen.Content
 {
     public class ContentCollection : IContentCollection
     {
-        private Dictionary<string, IContent> _contnets = new Dictionary<string, IContent>();
+        private Dictionary<Guid, IContent> _contnets = new Dictionary<Guid, IContent>();
 
         public IEnumerable<IContent> Contents
             => _contnets.Values;

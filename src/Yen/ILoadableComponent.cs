@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Yen
 {
     public interface ILoadableComponent : IComponent
     {
-        ISet<string> RequiredContentsIds { get; }
+        ISet<Guid> RequiredContentsIds { get; }
         void OnLoad(OnLoadContext context, IGameObject obj);
     }
 }

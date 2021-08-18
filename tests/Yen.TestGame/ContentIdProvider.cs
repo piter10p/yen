@@ -1,4 +1,6 @@
-﻿namespace Yen.TestGame
+﻿using System;
+
+namespace Yen.TestGame
 {
     
 
@@ -6,7 +8,7 @@
     {
         public static class Animations
         {
-            public static string Smile = nameof(Smile);
+            public static Guid Smile = Guid.NewGuid();
         }
     }
 }

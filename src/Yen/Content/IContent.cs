@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using System;
 
 namespace Yen.Content
 {
     public interface IContent
     {
-        string Id { get; }
+        Guid Id { get; }
         bool Loaded { get; }
         void Load(LoadContext context);
         void Unload();

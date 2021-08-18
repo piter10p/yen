@@ -1,7 +1,9 @@
-﻿namespace Yen.Content
+﻿using System;
+
+namespace Yen.Content
 {
     public interface IReadOnlyContentRepository
     {
-        IContent GetContent(string id);
+        IContent GetContent(Guid id);
     }
 }

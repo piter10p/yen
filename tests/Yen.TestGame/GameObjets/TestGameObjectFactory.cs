@@ -11,7 +11,7 @@ namespace Yen.TestGame.GameObjets
         {
             SetInitialPosition(new Vector2(100, 100));
 
-            var animations = new HashSet<string>()
+            var animations = new HashSet<Guid>()
             {
                 ContentIdProvider.Animations.Smile
             };

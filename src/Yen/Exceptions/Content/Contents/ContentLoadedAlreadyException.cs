@@ -1,8 +1,10 @@
-﻿namespace Yen.Exceptions.Content.Contents
+﻿using System;
+
+namespace Yen.Exceptions.Content.Contents
 {
     public sealed class ContentLoadedAlreadyException : YenException
     {
-        public ContentLoadedAlreadyException(string id)
+        public ContentLoadedAlreadyException(Guid id)
             : base($"Content loaded already. Content id: '{id}'.")
         {
         }

@@ -11,7 +11,7 @@ namespace Yen.GraphicsComponents
 {
     public class AnimatedGraphicsComponent : IGraphicsComponent, ILoadableComponent
     {
-        private readonly ISet<string> _animationIds;
+        private readonly ISet<Guid> _animationIds;
         private List<IAnimation> _animations;
         private IAnimation _activeAnimation;
         private Color _color;
@@ -25,10 +25,10 @@ namespace Yen.GraphicsComponents
 
         private SpriteBatch _spriteBatch;
 
-        public ISet<string> RequiredContentsIds => _animationIds;
+        public ISet<Guid> RequiredContentsIds => _animationIds;
 
         public AnimatedGraphicsComponent(
-            ISet<string> animationIds,
+            ISet<Guid> animationIds,
             Color color,
             AnimationPlayMode animationPlayMode)
         {
@@ -50,10 +50,8 @@ namespace Yen.GraphicsComponents
             UpdateFrame(obj);
         }
 
-        public void PlayAnimation(string animationId, AnimationPlayMode animationPlayMode, int startFrame = 0)
+        public void PlayAnimation(Guid animationId, AnimationPlayMode animationPlayMode, int startFrame = 0)
         {
-            if (string.IsNullOrWhiteSpace(animationId)) throw new ArgumentException($"'{nameof(animationId)}' cannot be null or whitespace.", nameof(animationId));
-
             if (!_animationIds.Contains(animationId))
                 throw new AnimationNotKnownException(animationId);
 
