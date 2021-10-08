@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F41BCB91
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yen.TestGame", "tests\Yen.TestGame\Yen.TestGame.csproj", "{E28ACD43-B9C4-4698-BA7A-4DE0910ABCC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yen.UnitTests", "tests\Yen.UnitTests\Yen.UnitTests.csproj", "{AA292021-BAED-4929-B487-9C0A84FA86C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{E28ACD43-B9C4-4698-BA7A-4DE0910ABCC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E28ACD43-B9C4-4698-BA7A-4DE0910ABCC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E28ACD43-B9C4-4698-BA7A-4DE0910ABCC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA292021-BAED-4929-B487-9C0A84FA86C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA292021-BAED-4929-B487-9C0A84FA86C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA292021-BAED-4929-B487-9C0A84FA86C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA292021-BAED-4929-B487-9C0A84FA86C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D2FB0888-C8D5-405D-A24E-C54F1D238C0A} = {0305C91D-846D-473D-AA0A-6BEB46DB9B18}
 		{E28ACD43-B9C4-4698-BA7A-4DE0910ABCC4} = {F41BCB91-7E90-4E99-AE6B-1B7180D82536}
+		{AA292021-BAED-4929-B487-9C0A84FA86C8} = {F41BCB91-7E90-4E99-AE6B-1B7180D82536}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1869090B-89B5-4614-9D20-ADEC010EEA13}
