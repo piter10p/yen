@@ -62,9 +62,9 @@ namespace Yen.UnitTests.Content
             sut.Load(new LoadContext(null));
 
             //Assert
-            notUsedContentUnloaded.LoadCount.Should().Be(0);
-            usedContentUnloaded.LoadCount.Should().Be(1);
-            usedContentLoaded.LoadCount.Should().Be(0);
+            notUsedContentUnloaded.LoadCount.CallsCount.Should().Be(0);
+            usedContentUnloaded.LoadCount.CallsCount.Should().Be(1);
+            usedContentLoaded.LoadCount.CallsCount.Should().Be(0);
         }
 
         [Fact]
@@ -84,9 +84,9 @@ namespace Yen.UnitTests.Content
             sut.Unload();
 
             //Assert
-            notUsedContentUnloaded.UnloadCount.Should().Be(0);
-            unusedContentLoaded.UnloadCount.Should().Be(1);
-            usedContentLoaded.UnloadCount.Should().Be(0);
+            notUsedContentUnloaded.UnloadCount.CallsCount.Should().Be(0);
+            unusedContentLoaded.UnloadCount.CallsCount.Should().Be(1);
+            usedContentLoaded.UnloadCount.CallsCount.Should().Be(0);
         }
 
         private Mock<IContentSource> CreateContentSourceMock(ContentMock[] contents = null)

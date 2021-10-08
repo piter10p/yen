@@ -2,11 +2,11 @@
 {
     public class GraphicsComponentMock : IGraphicsComponent
     {
-        public int DrawCounter { get; private set; } = 0;
+        public MethodCounter DrawCounter { get; } = new MethodCounter();
 
         public void Draw(DrawContext context, IGameObject obj)
         {
-            DrawCounter++;
+            DrawCounter.Call();
         }
     }
 }

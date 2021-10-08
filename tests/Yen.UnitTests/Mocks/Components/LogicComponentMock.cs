@@ -2,11 +2,11 @@
 {
     public class LogicComponentMock : ILogicComponent
     {
-        public int UpdateCounter { get; private set; } = 0;
+        public MethodCounter UpdateCounter { get; } = new MethodCounter();
 
         public void Update(UpdateContext context, IGameObject obj)
         {
-            UpdateCounter++;
+            UpdateCounter.Call();
         }
     }
 }

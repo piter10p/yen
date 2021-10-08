@@ -13,11 +13,11 @@ namespace Yen.UnitTests.Mocks.Components
             _requiredContentsIds = requiredContentsIds;
         }
 
-        public int OnLoadCounter { get; private set; } = 0;
+        public MethodCounter OnLoadCounter { get; } = new MethodCounter();
 
         public void OnLoad(OnLoadContext context, IGameObject obj)
         {
-            OnLoadCounter++;
+            OnLoadCounter.Call();
         }
     }
 }

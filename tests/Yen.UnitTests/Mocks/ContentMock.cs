@@ -20,17 +20,17 @@ namespace Yen.UnitTests.Mocks
 
         public bool Loaded => _loaded;
 
-        public int LoadCount { get; private set; } = 0;
-        public int UnloadCount { get; private set; } = 0;
+        public MethodCounter LoadCount { get; } = new MethodCounter();
+        public MethodCounter UnloadCount { get; } = new MethodCounter();
 
         public void Load(LoadContext context)
         {
-            LoadCount++;
+            LoadCount.Call();
         }
 
         public void Unload()
         {
-            UnloadCount++;
+            UnloadCount.Call();
         }
     }
 }

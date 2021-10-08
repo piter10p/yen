@@ -24,8 +24,8 @@ namespace Yen.UnitTests
             gameObject.Update(new UpdateContext(null));
 
             //Assert
-            logicComponent1.UpdateCounter.Should().Be(1);
-            logicComponent2.UpdateCounter.Should().Be(1);
+            logicComponent1.UpdateCounter.CallsCount.Should().Be(1);
+            logicComponent2.UpdateCounter.CallsCount.Should().Be(1);
         }
 
         [Fact]
@@ -42,8 +42,8 @@ namespace Yen.UnitTests
             gameObject.OnLoad(new OnLoadContext(null, null));
 
             //Assert
-            loadableComponent1.OnLoadCounter.Should().Be(1);
-            loadableComponent2.OnLoadCounter.Should().Be(1);
+            loadableComponent1.OnLoadCounter.CallsCount.Should().Be(1);
+            loadableComponent2.OnLoadCounter.CallsCount.Should().Be(1);
         }
 
         [Fact]
@@ -59,8 +59,8 @@ namespace Yen.UnitTests
             gameObject.Draw(new DrawContext(null, null));
 
             //Assert
-            graphicsComponent1.DrawCounter.Should().Be(1);
-            graphicsComponent2.DrawCounter.Should().Be(1);
+            graphicsComponent1.DrawCounter.CallsCount.Should().Be(1);
+            graphicsComponent2.DrawCounter.CallsCount.Should().Be(1);
         }
 
         [Fact]
